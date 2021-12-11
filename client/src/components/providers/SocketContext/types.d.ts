@@ -11,8 +11,8 @@ interface CallData {
 interface SocketContextData {
   call: CallData | undefined;
   callAccepted: boolean;
-  myVideo: MutableRefObject<HTMLVideoElement | undefined>;
-  userVideo: MutableRefObjec<HTMLVideoElement | undefined>;
+  myVideo: MutableRefObject<HTMLVideoElement | null>;
+  userVideo: MutableRefObjec<HTMLVideoElement | null>;
   stream: MediaStream | undefined;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;

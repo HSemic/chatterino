@@ -23,9 +23,9 @@ const ContextProvider = ({
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
 
-  const myVideo = useRef<HTMLVideoElement>();
-  const userVideo = useRef<HTMLVideoElement>();
-  const connectionRef = useRef<any>();
+  const myVideo = useRef<HTMLVideoElement | null>(null);
+  const userVideo = useRef<HTMLVideoElement | null>(null);
+  // const connectionRef = useRef<any>();
 
   const navigate = useNavigate();
 
@@ -66,9 +66,9 @@ const ContextProvider = ({
 
     peer.signal(call.signal);
 
-    if (!connectionRef.current) return;
+    // if (!connectionRef.current) return;
 
-    connectionRef.current = peer;
+    // connectionRef.current = peer;
   };
 
   const callUser = (id: string) => {
@@ -99,7 +99,7 @@ const ContextProvider = ({
   const leaveCall = () => {
     setCallEnded(true);
 
-    connectionRef.current.destroy();
+    // connectionRef.current.destroy();
 
     navigate('/', { replace: true });
 
