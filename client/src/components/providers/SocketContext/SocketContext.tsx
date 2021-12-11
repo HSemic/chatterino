@@ -23,6 +23,7 @@ const ContextProvider = ({
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
 
+  const testVideo = useRef<HTMLVideoElement | null>(null);
   const myVideo = useRef<HTMLVideoElement | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
   // const connectionRef = useRef<any>();
@@ -34,6 +35,10 @@ const ContextProvider = ({
       .getUserMedia({ video: true, audio: true })
       .then((currentStream) => {
         setStream(currentStream);
+
+        if (!testVideo.current) return;
+
+        testVideo.current.srcObject = currentStream;
 
         if (!myVideo.current) return;
 
@@ -69,6 +74,8 @@ const ContextProvider = ({
     // if (!connectionRef.current) return;
 
     // connectionRef.current = peer;
+
+    navigate('/chat', { replace: true });
   };
 
   const callUser = (id: string) => {
@@ -93,6 +100,8 @@ const ContextProvider = ({
       setCallAccepted(true);
 
       peer.signal(signal);
+
+      navigate('/chat', { replace: true });
     });
   };
 
@@ -113,6 +122,7 @@ const ContextProvider = ({
         callAccepted,
         myVideo,
         userVideo,
+        testVideo,
         stream,
         name,
         setName,

@@ -60,7 +60,7 @@ export const MicVolumeMeter = ({
 
     if (!stream) return;
 
-    stream.onremovetrack = meter.close.bind(meter);
+    meter.close.bind(meter);
   }, [stream]);
 
   return (

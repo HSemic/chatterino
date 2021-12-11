@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { Options } from '../molecules/Options';
 import Notifications from '../atoms/Notifications';
 import { Grid, Paper, Theme } from '@mui/material';
-import VideoSettings from '../molecules/VideoSettings';
+import VideoSettings from '../molecules/SettingsVideo';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {

@@ -13,6 +13,7 @@ interface SocketContextData {
   callAccepted: boolean;
   myVideo: MutableRefObject<HTMLVideoElement | null>;
   userVideo: MutableRefObjec<HTMLVideoElement | null>;
+  testVideo: MutableRefObjec<HTMLVideoElement | null>;
   stream: MediaStream | undefined;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;

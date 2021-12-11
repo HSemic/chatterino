@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 
 import Settings from './components/organisms/Settings';
+import Chat from './components/organisms/Chat';
 
 const App = (): React.ReactElement => {
   return (
@@ -10,6 +11,7 @@ const App = (): React.ReactElement => {
       <CssBaseline />
       <Routes>
         <Route path="/" element={<Settings />} />
+        <Route path="/chat" element={<Chat />} />
         <Route
           path="*"
           element={

@@ -25,14 +25,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const VideoSettings = (): React.ReactElement => {
   const classes = useStyles();
-  const { myVideo } = useContext(SocketContext);
+  const { testVideo } = useContext(SocketContext);
 
   return (
     <Paper className={classes.paperVideoContainer}>
       <video
         playsInline
         muted
-        ref={myVideo}
+        ref={testVideo}
         autoPlay
         className={classes.video}
       />
