@@ -1,0 +1,11 @@
+{
+  "name": "chatterino",
+  "version": "1.0.0",
+  "description": "Video call and chatting application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HSemic",
+  "license": "MIT"
+}
