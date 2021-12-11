@@ -1,7 +1,7 @@
 // Imports
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
 
 // Express app setup
 const app = express();
@@ -19,7 +19,7 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 // IO setup
-const io = require('socket.io')(server, {
+const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
