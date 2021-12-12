@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     transform: 'translate(-50%, -50%)',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '70rem',
+    width: '60rem',
     flexDirection: 'row',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Theme, Typography, Paper } from '@mui/material';
+import { Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { SocketContext } from '../providers/SocketContext/SocketContext';
 
@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: '100%'
   },
   chatVideoSmall: {
+    zIndex: '20',
     '&:hover': {
       border: '2px solid lightblue',
       cursor: 'pointer'
@@ -40,17 +41,29 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface ChatVideoProps {
   maximized: boolean;
   user: boolean;
+  setUserMaximized: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ChatVideo = ({
   maximized,
-  user
+  user,
+  setUserMaximized
 }: ChatVideoProps): React.ReactElement => {
   const classes = useStyles();
   const { myVideo, userVideo, name, call, stream } = useContext(SocketContext);
 
   if (user === false && myVideo.current)
     myVideo.current.srcObject = stream as MediaStream;
+
+  const handleClick = () => {
+    if (maximized === true) return;
+
+    if (user === true) setUserMaximized(!maximized);
+
+    if (user === false) setUserMaximized(maximized);
+
+    console.log(maximized);
+  };
 
   return (
     <div
@@ -64,8 +77,9 @@ export const ChatVideo = ({
         ref={user === true ? userVideo : myVideo}
         autoPlay
         className={`${classes.chatVideo} ${
-          maximized === false ? classes.chatVideoSmall : null
+          maximized === false ? classes.chatVideoSmall : ''
         }`}
+        onClick={handleClick}
       />
       <Typography
         className={classes.name}
