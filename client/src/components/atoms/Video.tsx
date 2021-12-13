@@ -13,8 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   videoContainer: {
     width: '100%',
     padding: '0',
-    position: 'relative',
-    overflow: 'auto'
+    position: 'relative'
   }
 }));
 

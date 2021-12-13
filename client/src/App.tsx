@@ -10,7 +10,7 @@ const App = (): React.ReactElement => {
     <>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<Settings />} />
+        <Route path="/" element={<Chat />} />
         <Route path="/chat" element={<Chat />} />
         <Route
           path="*"

@@ -5,9 +5,8 @@ import { Mic } from '@mui/icons-material';
 
 import AudioStreamMeter from 'audio-stream-meter';
 import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   meterContainer: {
     position: 'absolute',
     width: '80%',
