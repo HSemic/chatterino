@@ -154,7 +154,7 @@ export const Chat = (): React.ReactElement => {
 
   return (
     <Box className={classes.wrapper}>
-      <CssBaseline />
+      {/* <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
@@ -235,7 +235,7 @@ export const Chat = (): React.ReactElement => {
         <Paper style={{ flex: '4 80%' }}></Paper>
         <Divider />
         <TextChatForm />
-      </Drawer>
+      </Drawer> */}
     </Box>
   );
 };

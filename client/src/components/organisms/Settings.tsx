@@ -1,59 +1,51 @@
-import React from 'react';
-import { makeStyles } from '@mui/styles';
+import React, { useContext } from 'react';
+import { Box, Grid, Theme } from '@mui/material';
+
+import { Wrapper } from '../atoms/Wrapper';
+import ChatVideo from '../molecules/ChatVideo';
+
+import { SocketContext } from '../providers/SocketContext/SocketContext';
+
+import { gridGap } from '../../styles/config';
+import SettingsVideo from '../molecules/VideoMic';
 import { Options } from '../molecules/Options';
 import Notifications from '../atoms/Notifications';
-import { Grid, Paper, Theme } from '@mui/material';
-import VideoSettings from '../molecules/SettingsVideo';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  wrapper: {
-    display: 'inline-flex',
-    position: 'absolute',
-    padding: '2rem',
-    top: '50%',
-    left: '50%',
-    borderRadius: '1rem',
-    transform: 'translate(-50%, -50%)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '60rem',
-    flexDirection: 'row',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
+  settingsWrapper: {
+    width: '55rem',
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
       height: '100%'
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
     }
   },
-  video: {
-    width: '100%'
+  gridItemSettingsVideo: {
+    overflow: 'auto'
   },
-  gridContainer: {
-    justifyContent: 'center'
-  },
-  paper: {
-    padding: '10px',
-    border: '2px solid black',
-    margin: '10px'
+  gridItemSettingsOptions: {
+    borderRadius: '10px'
   }
 }));
 
 export const Settings = (): React.ReactElement => {
+  const { myVideo } = useContext(SocketContext);
+
   const classes = useStyles();
 
-  // const { myVideo } = useContext(SocketContext);
-
   return (
-    <Paper elevation={3} square className={classes.wrapper}>
-      <Grid container gap={4}>
-        <VideoSettings />
-        <Options>
-          <Notifications />
-        </Options>
+    <Box className={classes.settingsWrapper}>
+      <Grid container direction="column">
+        <Grid item className={classes.gridItemSettingsVideo}>
+          <SettingsVideo />
+        </Grid>
+        <Grid item className={classes.gridItemSettingsOptions}>
+          <Options>
+            <Notifications />
+          </Options>
+        </Grid>
       </Grid>
-    </Paper>
+    </Box>
   );
 };
 
