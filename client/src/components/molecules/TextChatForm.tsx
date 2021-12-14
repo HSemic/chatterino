@@ -78,24 +78,29 @@ export const TextChatForm = ({
             justifyContent="center"
             alignItems="space-between"
             style={{ height: '100%' }}
+            spacing={1}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              fullWidth
-              onClick={() => onSendMessage(message)}
-            >
-              Send message
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={leaveCall}
-              startIcon={<PhoneDisabled />}
-            >
-              Hang up
-            </Button>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                fullWidth
+                onClick={() => onSendMessage(message)}
+              >
+                Send message
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={leaveCall}
+                startIcon={<PhoneDisabled />}
+              >
+                Hang up
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

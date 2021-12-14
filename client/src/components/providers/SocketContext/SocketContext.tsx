@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SocketContext = createContext<SocketContextData>({} as SocketContextData);
 
-const socket = io('http://localhost:5000');
+const socket = io('https://chatterino2.herokuapp.com/');
 
 interface ContextProviderProps {
   children: JSX.Element;
@@ -26,7 +26,7 @@ const ContextProvider = ({
     {} as Peer.Instance
   );
   const [chatMessages, setChatMessages] = useState<ChatMessageData[]>([
-    { who: 'bot', name: 'bot', message: 'Hello! You can chat here.' }
+    { who: 'bot', name: 'Bot', message: 'Hello! You can chat here.' }
   ]);
 
   const testVideo = useRef<HTMLVideoElement>(null);
@@ -81,7 +81,7 @@ const ContextProvider = ({
         ...chatMessages,
         {
           who: 'user',
-          name: call && call.name ? call.name : 'User',
+          name: call !== undefined && call.name.length > 0 ? call.name : 'User',
           message: new TextDecoder().decode(data)
         }
       ]);
@@ -125,12 +125,11 @@ const ContextProvider = ({
     });
 
     peer.on('data', (data) => {
-      console.log(data);
       setChatMessages((chatMessages) => [
         ...chatMessages,
         {
           who: 'user',
-          name: call && call.name ? call.name : 'User',
+          name: call !== undefined && call.name.length > 0 ? call.name : 'User',
           message: new TextDecoder().decode(data)
         }
       ]);
@@ -159,10 +158,12 @@ const ContextProvider = ({
     setCurrentPeer({} as Peer.Instance);
 
     setChatMessages((chatMessages) => [
-      { who: 'bot', name: 'bot', message: 'Hello! You can chat here.' }
+      { who: 'bot', name: 'Bot', message: 'Hello! You can chat here.' }
     ]);
 
     // connectionRef.current.destroy();
+
+    setCall(undefined);
 
     navigate('/', { replace: true });
 

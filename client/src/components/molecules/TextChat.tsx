@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   messages: {
     overflow: 'auto',
-    maxHeight: '48rem',
+    maxHeight: '43rem',
     '&::-webkit-scrollbar': {
       width: '0.4em'
     },
@@ -55,7 +55,10 @@ export const TextChat = ({
   const { sendMessage } = useContext(SocketContext);
 
   const onSendMessage = (message: string) => {
+    if (message.length === 0) return;
+
     sendMessage(message);
+
     messagesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
