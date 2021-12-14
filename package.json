@@ -4,7 +4,7 @@
   "description": "Video call and chatting application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node index.ts"
   },
   "author": "HSemic",
   "license": "MIT",
@@ -12,6 +12,8 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "typescript": "^4.1.2",
+    "ts-node": "^10.4.0",
     "@types/express": "^4.17.13",
     "@types/socket.io": "^3.0.2",
     "cors": "^2.8.5",
