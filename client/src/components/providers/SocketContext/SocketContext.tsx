@@ -22,10 +22,16 @@ const ContextProvider = ({
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
+  const [currentPeer, setCurrentPeer] = useState<Peer.Instance>(
+    {} as Peer.Instance
+  );
+  const [chatMessages, setChatMessages] = useState<ChatMessageData[]>([
+    { who: 'bot', name: 'bot', message: 'Hello! You can chat here.' }
+  ]);
 
-  const testVideo = useRef<HTMLVideoElement | null>(null);
-  const myVideo = useRef<HTMLVideoElement | null>(null);
-  const userVideo = useRef<HTMLVideoElement | null>(null);
+  const testVideo = useRef<HTMLVideoElement>(null);
+  const myVideo = useRef<HTMLVideoElement>(null);
+  const userVideo = useRef<HTMLVideoElement>(null);
   // const connectionRef = useRef<any>();
 
   const navigate = useNavigate();
@@ -36,19 +42,19 @@ const ContextProvider = ({
       .then((currentStream) => {
         setStream(currentStream);
 
-        if (!testVideo.current) return;
+        // if (myVideo.current) myVideo.current.srcObject = currentStream;
 
-        testVideo.current.srcObject = currentStream;
-
-        if (!myVideo.current) return;
-
-        myVideo.current.srcObject = currentStream;
+        if (testVideo.current) testVideo.current.srcObject = currentStream;
       });
 
     socket.on('me', (id) => setMe(id));
 
     socket.on('calluser', ({ from, name: callerName, signal }) => {
       setCall({ isReceivedCall: true, from, name: callerName, signal });
+    });
+
+    socket.on('callended', () => {
+      leaveCall();
     });
   }, []);
 
@@ -57,14 +63,36 @@ const ContextProvider = ({
 
     const peer = new Peer({ initiator: false, trickle: false, stream });
 
+    setCurrentPeer(peer);
+
     peer.on('signal', (data) => {
       socket.emit('answercall', { signal: data, to: call?.from });
     });
 
     peer.on('stream', (userStream) => {
-      if (!userVideo.current) return;
+      if (userVideo.current) userVideo.current.srcObject = userStream;
 
-      userVideo.current.srcObject = userStream;
+      if (myVideo.current && stream !== undefined)
+        myVideo.current.srcObject = stream;
+    });
+
+    peer.on('data', (data) => {
+      setChatMessages((chatMessages) => [
+        ...chatMessages,
+        {
+          who: 'user',
+          name: call && call.name ? call.name : 'User',
+          message: new TextDecoder().decode(data)
+        }
+      ]);
+    });
+
+    peer.on('close', () => {
+      leaveCall();
+    });
+
+    peer.on('error', () => {
+      leaveCall();
     });
 
     if (!call) return;
@@ -96,6 +124,26 @@ const ContextProvider = ({
       userVideo.current.srcObject = userStream;
     });
 
+    peer.on('data', (data) => {
+      console.log(data);
+      setChatMessages((chatMessages) => [
+        ...chatMessages,
+        {
+          who: 'user',
+          name: call && call.name ? call.name : 'User',
+          message: new TextDecoder().decode(data)
+        }
+      ]);
+    });
+
+    peer.on('close', () => {
+      leaveCall();
+    });
+
+    peer.on('error', () => {
+      leaveCall();
+    });
+
     socket.on('callaccepted', (signal: Peer.SignalData) => {
       setCallAccepted(true);
 
@@ -105,14 +153,31 @@ const ContextProvider = ({
     });
   };
 
-  const leaveCall = () => {
+  function leaveCall() {
     setCallEnded(true);
+
+    setCurrentPeer({} as Peer.Instance);
+
+    setChatMessages((chatMessages) => [
+      { who: 'bot', name: 'bot', message: 'Hello! You can chat here.' }
+    ]);
 
     // connectionRef.current.destroy();
 
     navigate('/', { replace: true });
 
     window.location.reload();
+  }
+
+  const sendMessage = (message: string) => {
+    if (Object.keys(currentPeer).length === 0) return;
+
+    currentPeer.send(message);
+
+    setChatMessages((chatMessages) => [
+      ...chatMessages,
+      { who: 'me', message: message, name: 'You' }
+    ]);
   };
 
   return (
@@ -130,7 +195,9 @@ const ContextProvider = ({
         me,
         callUser,
         leaveCall,
-        answerCall
+        answerCall,
+        sendMessage,
+        chatMessages
       }}
     >
       {children}

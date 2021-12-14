@@ -8,7 +8,7 @@ const Notifications = (): React.ReactElement => {
   const { answerCall, leaveCall, call, callAccepted } =
     useContext(SocketContext);
 
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
 
   const onCallAccept = () => {
     answerCall();

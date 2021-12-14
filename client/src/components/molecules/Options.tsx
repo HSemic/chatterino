@@ -9,11 +9,11 @@ import { SocketContext } from '../providers/SocketContext/SocketContext';
 const useStyles = makeStyles((theme) => ({
   optionsForm: {
     display: 'flex',
-    flexDirection: 'column',
-    borderRadius: '10px'
+    flexDirection: 'column'
   },
   gridContainer: {
-    width: '100%'
+    width: '100%',
+    borderRadius: '1rem !important'
   },
   margin: {
     marginTop: '2rem !important'

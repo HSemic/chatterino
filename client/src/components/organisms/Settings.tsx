@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Box, Grid, Theme } from '@mui/material';
 
 import VideoMic from '../molecules/VideoMic';

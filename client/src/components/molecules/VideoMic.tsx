@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { SocketContext } from '../providers/SocketContext/SocketContext';
 
 import Video from '../atoms/Video';
-import MicVolumeMeter from '../atoms/MicVolumeMeter';
+import MicMeter from '../atoms/MicMeter';
 
 const useStyles = makeStyles(() => ({
   meter: {
@@ -20,7 +20,7 @@ export const VideoMic = (): React.ReactElement => {
 
   return (
     <Video me={true} ref={testVideo}>
-      <MicVolumeMeter className={classes.meter} />
+      <MicMeter className={classes.meter} />
     </Video>
   );
 };

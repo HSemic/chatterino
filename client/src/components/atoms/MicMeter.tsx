@@ -40,9 +40,13 @@ export const MicVolumeMeter = ({
   const [volume, setVolume] = useState(0);
 
   useEffect(() => {
-    const audioContext = new AudioContext();
+    let isMounted = true;
+
+    if (!isMounted) return;
 
     if (!stream) return;
+
+    const audioContext = new AudioContext();
 
     const mediaStream = audioContext.createMediaStreamSource(
       stream as MediaStream
@@ -57,9 +61,11 @@ export const MicVolumeMeter = ({
 
     mediaStream.connect(meter);
 
-    if (!stream) return;
-
     meter.close.bind(meter);
+
+    return () => {
+      isMounted = false;
+    };
   }, [stream]);
 
   return (

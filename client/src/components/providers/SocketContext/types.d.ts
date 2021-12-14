@@ -1,4 +1,4 @@
-import { MutableRefObject, Ref } from 'react';
+import { RefObject } from 'react';
 import { SignalData } from 'simple-peer';
 
 interface CallData {
@@ -11,9 +11,9 @@ interface CallData {
 interface SocketContextData {
   call: CallData | undefined;
   callAccepted: boolean;
-  myVideo: MutableRefObject<HTMLVideoElement | null>;
-  userVideo: MutableRefObjec<HTMLVideoElement | null>;
-  testVideo: MutableRefObjec<HTMLVideoElement | null>;
+  myVideo: RefObject<HTMLVideoElement>;
+  userVideo: RefObject<HTMLVideoElement>;
+  testVideo: RefObject<HTMLVideoElement>;
   stream: MediaStream | undefined;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
@@ -22,4 +22,6 @@ interface SocketContextData {
   callUser: (id: string) => void;
   leaveCall: () => void;
   answerCall: () => void;
+  sendMessage: (message: string) => void;
+  chatMessages: ChatMessageData[];
 }
