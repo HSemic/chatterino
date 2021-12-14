@@ -38,7 +38,10 @@ io.on('connection', (socket: Socket) => {
   });
 
   socket.on('answercall', (data) => {
-    io.to(data.to).emit('callaccepted', data.signal);
+    io.to(data.to).emit('callaccepted', {
+      signal: data.signal,
+      from: data.from
+    });
   });
 });
 

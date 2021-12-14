@@ -19,6 +19,7 @@ const ContextProvider = ({
   const [stream, setStream] = useState<MediaStream | undefined>(undefined);
   const [me, setMe] = useState('');
   const [call, setCall] = useState<CallData | undefined>(undefined);
+  const [fromName, setFromName] = useState('');
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
@@ -42,7 +43,7 @@ const ContextProvider = ({
       .then((currentStream) => {
         setStream(currentStream);
 
-        // if (myVideo.current) myVideo.current.srcObject = currentStream;
+        if (myVideo.current) myVideo.current.srcObject = currentStream;
 
         if (testVideo.current) testVideo.current.srcObject = currentStream;
       });
@@ -51,11 +52,12 @@ const ContextProvider = ({
 
     socket.on('calluser', ({ from, name: callerName, signal }) => {
       setCall({ isReceivedCall: true, from, name: callerName, signal });
+      setFromName(callerName);
     });
 
-    socket.on('callended', () => {
-      leaveCall();
-    });
+    // socket.on('callended', () => {
+    //   leaveCall();
+    // });
   }, []);
 
   const answerCall = () => {
@@ -65,8 +67,14 @@ const ContextProvider = ({
 
     setCurrentPeer(peer);
 
+    setFromName(call?.name ? call.name : 'User');
+
     peer.on('signal', (data) => {
-      socket.emit('answercall', { signal: data, to: call?.from });
+      socket.emit('answercall', {
+        signal: data,
+        to: call?.from,
+        from: fromName
+      });
     });
 
     peer.on('stream', (userStream) => {
@@ -81,18 +89,10 @@ const ContextProvider = ({
         ...chatMessages,
         {
           who: 'user',
-          name: call !== undefined && call.name.length > 0 ? call.name : 'User',
+          name: fromName.length > 0 ? fromName : 'User',
           message: new TextDecoder().decode(data)
         }
       ]);
-    });
-
-    peer.on('close', () => {
-      leaveCall();
-    });
-
-    peer.on('error', () => {
-      leaveCall();
     });
 
     if (!call) return;
@@ -109,6 +109,10 @@ const ContextProvider = ({
   const callUser = (id: string) => {
     const peer = new Peer({ initiator: true, trickle: false, stream });
 
+    setCurrentPeer(peer);
+
+    setFromName(call?.name ? call.name : 'User');
+
     peer.on('signal', (data) => {
       socket.emit('calluser', {
         userToCall: id,
@@ -122,6 +126,9 @@ const ContextProvider = ({
       if (!userVideo.current) return;
 
       userVideo.current.srcObject = userStream;
+
+      if (myVideo.current && stream !== undefined)
+        myVideo.current.srcObject = stream;
     });
 
     peer.on('data', (data) => {
@@ -129,27 +136,24 @@ const ContextProvider = ({
         ...chatMessages,
         {
           who: 'user',
-          name: call !== undefined && call.name.length > 0 ? call.name : 'User',
+          name: fromName.length > 0 ? fromName : 'User',
           message: new TextDecoder().decode(data)
         }
       ]);
     });
 
-    peer.on('close', () => {
-      leaveCall();
-    });
+    socket.on(
+      'callaccepted',
+      (data: { signal: Peer.SignalData; from: string }) => {
+        setCallAccepted(true);
 
-    peer.on('error', () => {
-      leaveCall();
-    });
+        setFromName(data.from);
 
-    socket.on('callaccepted', (signal: Peer.SignalData) => {
-      setCallAccepted(true);
+        peer.signal(data.signal);
 
-      peer.signal(signal);
-
-      navigate('/chat', { replace: true });
-    });
+        navigate('/chat', { replace: true });
+      }
+    );
   };
 
   function leaveCall() {
@@ -164,6 +168,8 @@ const ContextProvider = ({
     // connectionRef.current.destroy();
 
     setCall(undefined);
+
+    setFromName('');
 
     navigate('/', { replace: true });
 
