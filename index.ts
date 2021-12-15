@@ -21,7 +21,7 @@ app.get('/', (_req: Request, res: Response) => {
 // IO setup
 const io = new Server(server, {
   cors: {
-    origin: 'https://chattterino.netlify.app/',
+    origin: 'chattterino.netlify.app',
     methods: ['GET', 'POST']
   }
 });
