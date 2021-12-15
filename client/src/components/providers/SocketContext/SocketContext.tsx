@@ -111,7 +111,7 @@ const ContextProvider = ({
 
     setCurrentPeer(peer);
 
-    setFromName(call?.name ? call.name : 'User');
+    // setFromName(call?.name ? call.name : 'User');
 
     peer.on('signal', (data) => {
       socket.emit('calluser', {
