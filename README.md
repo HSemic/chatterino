@@ -1,4 +1,4 @@
-# chatterino
+# Chatterino
 
 Welcome to Chatterino!
 
