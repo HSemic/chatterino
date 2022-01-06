@@ -6,7 +6,7 @@ This web app serves as a tool for 2-person video calls and text chat.
 
 This app is deployed with Netlify and can be accessed here: https://chattterino.netlify.app/.
 
-The backend is deployed on Heroku. It is CORS configured to work only with the frontend. To run the app locally, intallation steps in the next section can be followed.
+The backend is deployed on Heroku. It is CORS configured to work only with the frontend. To run the app locally, installation steps in the next section can be followed.
 
 ## Installation
 
